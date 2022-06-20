@@ -25,15 +25,31 @@ server.post('/sign-up', (request, response) => {
 
 //TWEET POST
 server.post('/tweets', (request, response) => {
-  const tweet = request.body;
-  tweetsData.push(tweet)
+  const user = users.find(user => user.username === request.body.username)
+  const tweet = {
+    username: request.body.username,
+    avatar: user.avatar,
+    tweet: request.body.tweet
+  };
+  tweetsData.unshift(tweet)
   response.send('ok')
 })
 
 
+
 // GET DE TWEETS
 server.get('/tweets', (request, response) => {
-  response.send(tweetsData)
+
+  const tweetsPlusTen = []
+
+  if (tweetsData.length < 10){
+    response.send(tweetsData)
+  } else {
+    for(let i = 0; i < 10; i++){
+      tweetsPlusTen.push(tweetsData[i])
+    }
+    response.send(tweetsPlusTen)
+  }
 } )
 
 
